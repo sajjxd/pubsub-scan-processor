@@ -46,6 +46,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    volumes:
+      - ./data:/app/data
     depends_on:
       mk-subscription:
         condition: service_completed_successfully
