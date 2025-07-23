@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/pubsub"
-	"github.com/censys/scan-takehome/pkg/scanning"
+	"github.com/sajjxd/pubsub-scan-processor/pkg/types"
 )
 
 var (
@@ -31,7 +31,7 @@ func main() {
 
 	for range time.Tick(time.Second) {
 
-		scan := &scanning.Scan{
+		scan := &types.Scan{
 			Ip:        fmt.Sprintf("1.1.1.%d", rand.Intn(255)),
 			Port:      uint32(rand.Intn(65535)),
 			Service:   services[rand.Intn(len(services))],
@@ -41,11 +41,11 @@ func main() {
 		serviceResp := fmt.Sprintf("service response: %d", rand.Intn(100))
 
 		if rand.Intn(2) == 0 {
-			scan.DataVersion = scanning.V1
-			scan.Data = &scanning.V1Data{ResponseBytesUtf8: []byte(serviceResp)}
+			scan.DataVersion = types.V1
+			scan.Data = &types.V1Data{ResponseBytesUtf8: []byte(serviceResp)}
 		} else {
-			scan.DataVersion = scanning.V2
-			scan.Data = &scanning.V2Data{ResponseStr: serviceResp}
+			scan.DataVersion = types.V2
+			scan.Data = &types.V2Data{ResponseStr: serviceResp}
 		}
 
 		encoded, err := json.Marshal(scan)

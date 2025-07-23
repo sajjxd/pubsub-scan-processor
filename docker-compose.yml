@@ -1,4 +1,4 @@
-version: '3'
+version: '4'
 services:
 
   # Starts the P/S emulator
@@ -40,3 +40,17 @@ services:
     build:
       context: .
       dockerfile: ./cmd/scanner/Dockerfile
+
+  # Runs the processor
+  processor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      mk-subscription:
+        condition: service_completed_successfully
+    environment:
+      - PUBSUB_EMULATOR_HOST=pubsub:8085
+      - GOOGLE_CLOUD_PROJECT=test-project
+      - SUBSCRIPTION_ID=scan-sub
+      - DATABASE_PATH=/app/data/scans.db

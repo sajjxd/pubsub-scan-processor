@@ -1,7 +1,9 @@
-package scanning
+package types
+
+import "time"
 
 const (
-	Version = iota
+	_ = iota // Ignore 0
 	V1
 	V2
 )
@@ -21,4 +23,12 @@ type V1Data struct {
 
 type V2Data struct {
 	ResponseStr string `json:"response_str"`
+}
+
+type ScanRecord struct {
+	Ip          string
+	Port        uint32
+	Service     string
+	Response    string
+	LastScanned time.Time
 }
